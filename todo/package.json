@@ -5,7 +5,7 @@
   "scripts": {
     "build": "react-router build",
     "dev": "react-router dev",
-    "start": "react-router-serve ./build/server/index.js",
+    "start": "node server.js",
     "typecheck": "react-router typegen && tsc"
   },
   "dependencies": {
@@ -13,6 +13,8 @@
     "@navikt/ds-react": "^7.35.1",
     "@react-router/node": "7.10.1",
     "@react-router/serve": "7.10.1",
+    "compression": "^1.8.1",
+    "express": "^5.2.1",
     "isbot": "^5.1.31",
     "react": "^19.2.1",
     "react-dom": "^19.2.1",

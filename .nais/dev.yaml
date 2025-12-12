@@ -1,0 +1,32 @@
+apiVersion: nais.io/v1alpha1
+kind: Application
+metadata:
+  name: react-router-todo
+  namespace: ung-i-nav
+  labels:
+    team: ung-i-nav
+spec:
+  image: {{ image }}
+  port: 3000
+  ingresses:
+    - https://react-router-todo.dev.nav.no
+  liveness:
+    path: /isalive
+    port: 3000
+    initialDelay: 20
+    timeout: 60
+  readiness:
+    path: /isready
+    port: 3000
+    initialDelay: 20
+    timeout: 60
+  replicas:
+    min: 1
+    max: 1
+    cpuThresholdPercentage: 80
+  resources:
+    limits:
+      memory: 128Mi
+    requests:
+      cpu: 20m
+      memory: 64Mi

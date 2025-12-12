@@ -1,0 +1,30 @@
+name: Deploy todo
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    name: Build, push and deploy Docker container
+    runs-on: ubuntu-latest
+    permissions:
+      contents: "read"
+      id-token: "write"
+    steps:
+      - uses: actions/checkout@v6
+      - name: Push docker image to GAR
+        uses: nais/docker-build-push@v0
+        id: docker-build-push
+        with:
+          team: ung-i-nav
+          identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
+          project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
+      - name: Deploy to dev
+        uses: nais/deploy/actions/deploy@v2
+        env:
+          CLUSTER: dev-gcp
+          RESOURCE: .nais/dev.yaml
+          VAR: image=${{ steps.docker-build-push.outputs.image }}
+          TELEMETRY: ${{ steps.docker-build-push.outputs.telemetry }}

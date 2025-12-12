@@ -1,0 +1,27 @@
+import compression from "compression";
+import express from "express";
+
+const BUILD_PATH = "./build/server/index.js";
+const PORT = Number.parseInt(process.env.PORT || "3000");
+
+const app = express();
+
+app.use(compression());
+app.disable("x-powered-by");
+
+console.log("Starting production server");
+
+app.get('isAlive|isReady', (req, res) => {
+    res.send('OK')
+})
+
+app.use(
+    "/assets",
+    express.static("build/client/assets", { immutable: true, maxAge: "1y" }),
+);
+app.use(express.static("build/client", { maxAge: "1h" }));
+app.use(await import(BUILD_PATH).then((mod) => mod.app));
+
+app.listen(PORT, () => {
+    console.log(`Server is running on http://localhost:${PORT}`);
+});
