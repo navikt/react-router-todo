@@ -9,7 +9,7 @@ spec:
   image: {{ image }}
   port: 3000
   ingresses:
-    - https://react-router-todo.dev.nav.no
+    - https://react-router-todo.ansatt.dev.nav.no
   liveness:
     path: /isalive
     port: 3000
